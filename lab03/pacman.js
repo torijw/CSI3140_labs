@@ -34,14 +34,26 @@ function moveLeft(game) {
     } else {
         game[pacmanIndex] = "^.";
     }
-    var pacmanIndex = (((pacmanIndex - 1) % n) + n) % n;
+    pacmanIndex = (((pacmanIndex - 1) % n) + n) % n;
     
-    if (game[pacmanIndex]==".") {
+    let element = String(game[pacmanIndex]);
+    if (element.includes(".") || element.includes("@")) {
         score++;
     }
     game[pacmanIndex] = "C" + game[pacmanIndex];
 
     console.log(game.join("  "));
+    console.log(score);
+
+    //next level check
+    if (score == (n-1)) {
+        console.log("Next level");
+        score = 0;
+        let newGame = createGame(n);
+        console.log(newGame.join("  "))
+        return newGame;
+    }
+
     return game;
 }
 
@@ -53,17 +65,32 @@ function moveRight(game) {
     }
     pacmanIndex = (pacmanIndex + 1) % n;
 
-    if (game[pacmanIndex]==".") {
+    let element = String(game[pacmanIndex]);
+    if (element.includes(".") || element.includes("@")) {
         score++;
     }
     game[pacmanIndex] = "C" + game[pacmanIndex];
-    
+
     console.log(game.join("  "));
+    console.log(score);
+
+    //next level check
+    if (score == (n-1)) {
+        console.log("Next level");
+        score = 0;
+        let newGame = createGame(n);
+        console.log(newGame.join("  "))
+        return newGame;
+    }
+    
     return game;
 }
 
 game = createGame(n);
 console.log(game.join("  "));
 game = moveLeft(game);
+for (var i=0; i<n; i++) {
+    game = moveRight(game);
+}
 game = moveRight(game);
 console.log(score);
