@@ -2,6 +2,7 @@ var n = 10;
 var pacmanIndex;
 var ghostIndex;
 var fruitIndex;
+var score = 0;
 
 function createGame(n) {
     pacmanIndex = Math.floor(Math.random()*(n-1));
@@ -28,17 +29,35 @@ function createGame(n) {
 }
 
 function moveLeft(game) {
-    game[pacmanIndex] = "";
-    pacmanIndex = (((pacmanIndex - 1) % n) + n) % n;
+    if (pacmanIndex!=ghostIndex) {
+        game[pacmanIndex] = " ";
+    } else {
+        game[pacmanIndex] = "^.";
+    }
+    var pacmanIndex = (((pacmanIndex - 1) % n) + n) % n;
+    
+    if (game[pacmanIndex]==".") {
+        score++;
+    }
     game[pacmanIndex] = "C" + game[pacmanIndex];
+
     console.log(game.join("  "));
     return game;
 }
 
 function moveRight(game) {
-    game[pacmanIndex] = "";
+    if (pacmanIndex!=ghostIndex) {
+        game[pacmanIndex] = " ";
+    } else {
+        game[pacmanIndex] = "^.";
+    }
     pacmanIndex = (pacmanIndex + 1) % n;
+
+    if (game[pacmanIndex]==".") {
+        score++;
+    }
     game[pacmanIndex] = "C" + game[pacmanIndex];
+    
     console.log(game.join("  "));
     return game;
 }
@@ -47,3 +66,4 @@ game = createGame(n);
 console.log(game.join("  "));
 game = moveLeft(game);
 game = moveRight(game);
+console.log(score);
