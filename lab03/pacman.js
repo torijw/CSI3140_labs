@@ -1,25 +1,49 @@
-function createGame(n) {
-    var pacmanIndex = Math.floor(Math.random()*(n-1));
-    var ghostIndex = (pacmanIndex + 3) % n;
-    var fruitIndex = (ghostIndex + 2) % n;
+var n = 10;
+var pacmanIndex;
+var ghostIndex;
+var fruitIndex;
 
-    var map = new Array(n);
+function createGame(n) {
+    pacmanIndex = Math.floor(Math.random()*(n-1));
+    ghostIndex = (pacmanIndex + 3) % n;
+    fruitIndex = (ghostIndex + 2) % n;
+
+    let map = new Array(n);
     for (var i=0; i<n; i++) {
         switch (i) {
             case pacmanIndex:
-                map.push("C");
+                map[i] = "C";
                 break;
             case ghostIndex:
-                map.push("^.");
+                map[i] = "^.";
                 break;
             case fruitIndex:
-                map.push("@");
+                map[i] = "@";
                 break;
             default:
-                map.push(".");
+                map[i] = ".";
         }
     }
-    console.log(map.join("  "));
+    return map;
 }
 
-createGame(10);
+function moveLeft(game) {
+    game[pacmanIndex] = "";
+    pacmanIndex = (((pacmanIndex - 1) % n) + n) % n;
+    game[pacmanIndex] = "C" + game[pacmanIndex];
+    console.log(game.join("  "));
+    return game;
+}
+
+function moveRight(game) {
+    game[pacmanIndex] = "";
+    pacmanIndex = (pacmanIndex + 1) % n;
+    game[pacmanIndex] = "C" + game[pacmanIndex];
+    console.log(game.join("  "));
+    return game;
+}
+
+game = createGame(n);
+console.log(game.join("  "));
+game = moveLeft(game);
+game = moveRight(game);
