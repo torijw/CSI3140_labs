@@ -3,6 +3,8 @@ var pacmanIndex;
 var ghostIndex;
 var fruitIndex;
 var score = 0;
+var game;
+var direction = 1;
 
 function createGame(n) {
     pacmanIndex = Math.floor(Math.random()*(n-1));
@@ -37,7 +39,7 @@ function moveLeft(game) {
     pacmanIndex = (((pacmanIndex - 1) % n) + n) % n;
     
     let element = String(game[pacmanIndex]);
-    if (element.includes(".") || element.includes("@")) {
+    if (element.includes(".")) {
         score++;
     }
     game[pacmanIndex] = "C" + game[pacmanIndex];
@@ -50,7 +52,7 @@ function moveLeft(game) {
         console.log("Next level");
         score = 0;
         let newGame = createGame(n);
-        console.log(newGame.join("  "))
+        console.log(newGame.join("  "));
         return newGame;
     }
 
@@ -66,7 +68,7 @@ function moveRight(game) {
     pacmanIndex = (pacmanIndex + 1) % n;
 
     let element = String(game[pacmanIndex]);
-    if (element.includes(".") || element.includes("@")) {
+    if (element.includes(".")) {
         score++;
     }
     game[pacmanIndex] = "C" + game[pacmanIndex];
@@ -75,15 +77,33 @@ function moveRight(game) {
     console.log(score);
 
     //next level check
-    if (score == (n-1)) {
+    if (score == (n-2)) {
         console.log("Next level");
         score = 0;
         let newGame = createGame(n);
-        console.log(newGame.join("  "))
+        console.log(newGame.join("  "));
         return newGame;
     }
     
     return game;
+}
+
+function changeGhostDirection() {
+    direction = Math.random()<0.5 ? -1 : 1;
+}
+
+function moveGhost(game) {
+    let cur = String(game[ghostIndex]);
+    if (cur.includes(".")) {
+        game[ghostIndex] = ".";
+    } else if (cur.includes("@")){
+        game[ghostIndex] = "@";
+    }else {
+        game[ghostIndex] = " ";
+    }
+    ghostIndex = (ghostIndex + direction + n) % n;
+    game[ghostIndex] = "^" + game[ghostIndex];
+    console.log(game.join("  "));
 }
 
 game = createGame(n);
@@ -94,3 +114,9 @@ for (var i=0; i<n; i++) {
 }
 game = moveRight(game);
 console.log(score);
+
+//test ghost movement without timing
+moveGhost(game);
+moveGhost(game);
+changeGhostDirection();
+moveGhost(game);
